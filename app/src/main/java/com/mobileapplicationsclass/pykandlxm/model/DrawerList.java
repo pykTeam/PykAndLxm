@@ -5,6 +5,12 @@ package com.mobileapplicationsclass.pykandlxm.model;
  */
 public class DrawerList {
     public String name;
+    public int logo;
+
+    public DrawerList(String name, int logo) {
+        this.name = name;
+        this.logo = logo;
+    }
 
     public DrawerList(String name) {
         this.name = name;
@@ -16,5 +22,13 @@ public class DrawerList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getLogo() {
+        return logo;
+    }
+
+    public void setLogo(int logo) {
+        this.logo = logo;
     }
 }
