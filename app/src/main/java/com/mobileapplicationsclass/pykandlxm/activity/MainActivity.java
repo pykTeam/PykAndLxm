@@ -1,55 +1,89 @@
 package com.mobileapplicationsclass.pykandlxm.activity;
 
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment01;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment02;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment03;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment04;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment05;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment06;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment07;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment08;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment09;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment10;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment11;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment12;
 import com.mobileapplicationsclass.pykandlxm.R;
 import com.mobileapplicationsclass.pykandlxm.adapter.DlistAdapter;
 import com.mobileapplicationsclass.pykandlxm.adapter.MyFragmentPagerAdapter;
 import com.mobileapplicationsclass.pykandlxm.base.BaseActivity;
 import com.mobileapplicationsclass.pykandlxm.model.DrawerList;
 import com.mobileapplicationsclass.pykandlxm.utils.ToastUtil;
+import com.mobileapplicationsclass.pykandlxm.widget.ActionSheetDialog;
+import com.mobileapplicationsclass.pykandlxm.widget.CircleImageView;
+import com.mobileapplicationsclass.pykandlxm.widget.SlidingTabLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
  * Created by Administrator on 2016/8/31 0031.
  */
 public class MainActivity extends BaseActivity {
+
+
     //定义假数据
     private String[] list_name = {"主页", "登录", "退出", "关于"};
     private int[] list_logo = {R.mipmap.bili_anim_tv_chan_1, R.mipmap.bili_anim_tv_chan_3
             , R.mipmap.bili_anim_tv_chan_5, R.mipmap.bili_anim_tv_chan_7};
-    private String[] constellation_name = {"水瓶座 ", "双鱼座", "双鱼座", "白羊座", "双子座", "巨蟹座"
-            , "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"};
+    private String[] constellation_name = {"运势 ", "物语", "宝典", "收藏夹"};
+
+    /**
+     * 指定拍摄图片文件位置避免获取到缩略图
+     */
+    private File outFile;
+    /**
+     * 标记是拍照还是相册 0是拍照1是相册
+     */
+    private int cameraorpic;
+    /**
+     * 选择头像相册选取
+     */
+    private static final int REQUESTCODE_PICK = 1;
+    /**
+     * 裁剪好头像-设置头像
+     */
+    private static final int REQUESTCODE_CUTTING = 2;
+    /**
+     * 选择头像拍照选取
+     */
+    private static final int PHOTO_REQUEST_TAKEPHOTO = 3;
+    /**
+     * 裁剪好的头像的Bitmap
+     */
+    private Bitmap currentBitmap;
 
     private DrawerList mDl_data;
     private List<DrawerList> mDl_List;
@@ -62,21 +96,26 @@ public class MainActivity extends BaseActivity {
 
     private ActionBarDrawerToggle mdrawerToggle;
 
-    private List<String> tabIndicators;
-
 
     @Bind(R.id.drawer_list)
     ListView mListView;
+    @Bind(R.id.head_image)
+    CircleImageView headImage;
     @Bind(R.id.life_drawer)
     LinearLayout mLinearLayout;
     @Bind(R.id.tb_toolbar)
     Toolbar mToolbar;
     @Bind(R.id.tab)
-    TabLayout tab;
+    SlidingTabLayout tab;
     @Bind(R.id.dl_root)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.vpView)
     ViewPager mViewPager;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -89,10 +128,13 @@ public class MainActivity extends BaseActivity {
         initDrawer();
         contentDrawe();
         initContent();
+
     }
 
     @Override
     public void initToolBar() {
+        mToolbar.setLogo(R.mipmap.ic_bili_logo);
+        mToolbar.setTitle("星座运势");
         setSupportActionBar(mToolbar);
         //开启ActionBar上App icon功能
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -121,6 +163,28 @@ public class MainActivity extends BaseActivity {
     }
 
     private void contentDrawe() {
+
+        headImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ActionSheetDialog(MainActivity.this).Builder()
+
+                        .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.BULE, new ActionSheetDialog.OnSheetItemClickListener() {
+                            @Override
+                            public void onClick(int witch) {
+                                cameraorpic = 1;
+                                openCamera();
+                            }
+                        }).addSheetItem("打开相册", ActionSheetDialog.SheetItemColor.BULE, new ActionSheetDialog.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(int witch) {
+                        cameraorpic = 0;
+                        openPic();
+                    }
+                }).show();
+            }
+        });
+
         mDl_List = new ArrayList<>();
         for (int i = 0; i < list_name.length; i++) {
             String name = list_name[i];
@@ -130,36 +194,32 @@ public class MainActivity extends BaseActivity {
         }
         dlistAdapter = new DlistAdapter(this, mDl_List);
         mListView.setAdapter(dlistAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        break;
+                }
+            }
+        });
     }
 
     private void initContent() {
+
 
         Fragment01 fre01 = new Fragment01();
         Fragment02 fre02 = new Fragment02();
         Fragment03 fre03 = new Fragment03();
         Fragment04 fre04 = new Fragment04();
-        Fragment05 fre05 = new Fragment05();
-        Fragment06 fre06 = new Fragment06();
-        Fragment07 fre07 = new Fragment07();
-        Fragment08 fre08 = new Fragment08();
-        Fragment09 fre09 = new Fragment09();
-        Fragment10 fre10 = new Fragment10();
-        Fragment11 fre11 = new Fragment11();
-        Fragment12 fre12 = new Fragment12();
+
 
         mViewList = new ArrayList<>();
         mViewList.add(fre01);
         mViewList.add(fre02);
         mViewList.add(fre03);
         mViewList.add(fre04);
-        mViewList.add(fre05);
-        mViewList.add(fre06);
-        mViewList.add(fre07);
-        mViewList.add(fre08);
-        mViewList.add(fre09);
-        mViewList.add(fre10);
-        mViewList.add(fre11);
-        mViewList.add(fre12);
 
 
         mTitleList = new ArrayList<>();
@@ -167,17 +227,15 @@ public class MainActivity extends BaseActivity {
             mTitleList.add(constellation_name[i]);
         }
 
-        tab.setTabMode(TabLayout.MODE_SCROLLABLE);
-        for (int i = 0; i < constellation_name.length; i++) {
-            tab.addTab(tab.newTab().setText(mTitleList.get(i)));
-        }
-
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(), mViewList, mTitleList);
         mViewPager.setAdapter(myFragmentPagerAdapter);
-        tab.setupWithViewPager(mViewPager);
-        tab.setTabsFromPagerAdapter(myFragmentPagerAdapter);
-
+        tab.setTabTitleTextSize(14);//标题字体大小
+        tab.setTitleTextColor(Color.WHITE, 0xFFF8BBD0);//标题字体颜色
+        tab.setTabStripWidth(110);//滑动条宽度
+        tab.setSelectedIndicatorColors(Color.WHITE);//滑动条颜色
+        tab.setDistributeEvenly(true); //均匀平铺选项卡
+        tab.setViewPager(mViewPager);//最后调用此方法
 
     }
 
@@ -199,7 +257,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mLinearLayout);
-        menu.findItem(R.id.id_action_download).setVisible(!isDrawerOpen);
+        menu.findItem(R.id.id_action_share).setVisible(!isDrawerOpen);
         menu.findItem(R.id.id_action_search).setVisible(!isDrawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -219,9 +277,9 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         switch (item.getItemId()) {
-            case R.id.id_action_download:
+            case R.id.id_action_share:
                 //离线缓存
-                ToastUtil.showToast(this, "清理缓存");
+                ToastUtil.showToast(this, "分享");
                 break;
 
             case R.id.id_action_search:
@@ -230,6 +288,106 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 打开相册
+     */
+    private void openPic() {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+        pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(pickIntent, REQUESTCODE_PICK);
+
+    }
+
+    /**
+     * 打开相机
+     */
+    private void openCamera() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File outDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            if (!outDir.exists()) {
+                outDir.mkdirs();
+            }
+            outFile = new File(outDir, System.currentTimeMillis() + ".jpg");
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(outFile));
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+            startActivityForResult(intent, PHOTO_REQUEST_TAKEPHOTO);
+        } else {
+            Log.e("CAMERA", "请确认已经插入SD卡");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //  进行判断是那个操作跳转回来的，如果是裁剪跳转回来的这块就要把图片现实到View上，其他两种的话都把数据带入裁剪界面
+        switch (requestCode) {
+            //相册
+            case REQUESTCODE_PICK:
+                if (data == null || data.getData() == null) {
+                    return;
+                }
+                startPhotoZoom(data.getData());
+                break;
+            //裁剪
+            case REQUESTCODE_CUTTING:
+                if (data != null) {
+                    setPicToView(data);
+                }
+                break;
+            //拍照
+            case PHOTO_REQUEST_TAKEPHOTO:
+                startPhotoZoom(Uri.fromFile(outFile));
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 把裁剪好的图片设置到View上或者上传到网络
+     *
+     * @param data
+     */
+    private void setPicToView(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            /** 可用于图像上传 */
+            currentBitmap = extras.getParcelable("data");
+            headImage.setImageBitmap(currentBitmap);
+        }
+    }
+
+    /**
+     * 调用系统的图片裁剪
+     *
+     * @param data
+     */
+    private void startPhotoZoom(Uri data) {
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(data, "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("scale", true);//黑边
+        intent.putExtra("scaleUpIfNeeded", true);//黑边
+        intent.putExtra("return-data", true);
+        intent.putExtra("noFaceDetection", true);
+        startActivityForResult(intent, REQUESTCODE_CUTTING);
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 }

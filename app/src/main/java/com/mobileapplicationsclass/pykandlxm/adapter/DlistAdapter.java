@@ -14,7 +14,8 @@ import com.mobileapplicationsclass.pykandlxm.model.DrawerList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/9/2 0002.
+ * Created by lxm on 2016/9/2 0002.
+ * 抽屜列表適配器
  */
 public class DlistAdapter extends BaseAdapter {
     private Context context;

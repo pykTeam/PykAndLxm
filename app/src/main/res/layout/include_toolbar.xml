@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorAccent"
-    app:logo="@mipmap/ic_bili_logo"
     app:theme="@style/OverFlowMenuTheme"
-    app:popupTheme="@style/AppTheme"
-    app:title="星座运势">
+    app:popupTheme="@style/AppTheme">
 
 </android.support.v7.widget.Toolbar>
