@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -23,8 +22,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment01;
 import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment02;
@@ -45,13 +42,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
 /**
  * Created by Administrator on 2016/8/31 0031.
  */
 public class MainActivity extends BaseActivity {
+
 
 
     //定义假数据
@@ -379,15 +376,6 @@ public class MainActivity extends BaseActivity {
         intent.putExtra("noFaceDetection", true);
         startActivityForResult(intent, REQUESTCODE_CUTTING);
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 }

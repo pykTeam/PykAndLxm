@@ -1,6 +1,7 @@
 package com.mobileapplicationsclass.pykandlxm.Fragemnt;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.mobileapplicationsclass.pykandlxm.R;
 import com.mobileapplicationsclass.pykandlxm.base.BaseFragment;
@@ -10,13 +11,14 @@ import com.mobileapplicationsclass.pykandlxm.base.BaseFragment;
  */
 public class Fragment03 extends BaseFragment {
 
+
     @Override
     public int setLayoutResouceId() {
         return R.layout.fragment03;
     }
 
     @Override
-    public void initViews(Bundle savedInstanceState) {
+    protected void initView(View view, Bundle savedInstanceState) {
 
     }
 }

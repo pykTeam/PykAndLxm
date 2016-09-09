@@ -1,9 +1,14 @@
 package com.mobileapplicationsclass.pykandlxm.base;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 
 import butterknife.ButterKnife;
 
@@ -20,6 +25,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         //设置布局内容
         setContentView(getLayoutId());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
+
+
         //初始化黄油刀控件绑定框架
         ButterKnife.bind(this);
         //初始化控件

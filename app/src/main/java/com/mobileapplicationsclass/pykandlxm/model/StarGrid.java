@@ -1,19 +1,15 @@
 package com.mobileapplicationsclass.pykandlxm.model;
 
 /**
- * Created by Administrator on 2016/9/2 0002.
+ * Created by Administrator on 2016/9/8 0008.
  */
-public class DrawerList {
-    private String name;
+public class StarGrid {
+    public String name;
     private int logo;
 
-    public DrawerList(String name, int logo) {
+    public StarGrid(String name, int logo) {
         this.name = name;
         this.logo = logo;
-    }
-
-    public DrawerList(String name) {
-        this.name = name;
     }
 
     public String getName() {

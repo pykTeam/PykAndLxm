@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.mobileapplicationsclass.pykandlxm.R;
 import com.mobileapplicationsclass.pykandlxm.base.BaseActivity;
+import com.mobileapplicationsclass.pykandlxm.model.StarGrid;
 import com.mobileapplicationsclass.pykandlxm.utils.CommonUtils;
 import com.mobileapplicationsclass.pykandlxm.utils.ToastUtil;
 
@@ -42,7 +43,6 @@ public class LoginActivity extends BaseActivity{
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-
 
         et_username.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -103,6 +103,7 @@ public class LoginActivity extends BaseActivity{
             return;
         }
         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+//        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         finish();
     }
 }

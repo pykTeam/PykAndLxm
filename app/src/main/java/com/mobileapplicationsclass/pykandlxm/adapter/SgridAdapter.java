@@ -1,6 +1,7 @@
 package com.mobileapplicationsclass.pykandlxm.adapter;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,31 +10,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobileapplicationsclass.pykandlxm.R;
-import com.mobileapplicationsclass.pykandlxm.model.DrawerList;
+import com.mobileapplicationsclass.pykandlxm.model.StarGrid;
 
 import java.util.List;
 
 /**
- * Created by lxm on 2016/9/2 0002.
- * 抽屜列表适配器
+ * Created by Administrator on 2016/9/8 0008.
+ * 星座列表适配器
  */
-public class DlistAdapter extends BaseAdapter {
+public class SgridAdapter extends BaseAdapter {
     private Context context;
-    private List<DrawerList> mDl_List;
+    private List<StarGrid> mSg_List;
 
-    public DlistAdapter(Context context, List<DrawerList> dl_data) {
+    public SgridAdapter(Context context, List<StarGrid> mSg_List) {
         this.context = context;
-        this.mDl_List = dl_data;
+        this.mSg_List = mSg_List;
     }
 
     @Override
     public int getCount() {
-        return mDl_List == null ? 0 : mDl_List.size();
+        return mSg_List == null ? 0 : mSg_List.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mDl_List.get(position);
+        return mSg_List.get(position);
     }
 
     @Override
@@ -46,15 +47,15 @@ public class DlistAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
         viewHolder = new ViewHolder();
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.drawerlist_item, null);
-            viewHolder.textView = (TextView) convertView.findViewById(R.id.name);
-            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.logo);
+            convertView = LayoutInflater.from(context).inflate(R.layout.stargrid_tiem, null);
+            viewHolder.textView = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.iv_star);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.textView.setText(mDl_List.get(position).getName());
-        viewHolder.imageView.setImageResource(mDl_List.get(position).getLogo());
+        viewHolder.textView.setText(mSg_List.get(position).getName());
+        viewHolder.imageView.setImageResource(mSg_List.get(position).getLogo());
         return convertView;
     }
 
@@ -62,6 +63,4 @@ public class DlistAdapter extends BaseAdapter {
         TextView textView = null;
         ImageView imageView = null;
     }
-
-
 }
