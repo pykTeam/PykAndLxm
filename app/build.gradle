@@ -24,11 +24,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.2.1'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     // 百分比布局
     compile 'com.android.support:percent:23.4.0'
     // 黄油刀注解控件
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     // RollViewPager开源框架
     compile 'com.jude:rollviewpager:1.2.9'
     // Glide 框架

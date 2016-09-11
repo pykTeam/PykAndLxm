@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bacground">
+    android:background="@color/bacground"
+    android:orientation="vertical">
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/dl_root"
@@ -41,20 +41,27 @@
             android:background="@color/red"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:gravity="center">
+                android:layout_weight="3">
+
+                <ImageView
+                    android:id="@+id/iv_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/home_menu_bg_click" />
 
                 <com.mobileapplicationsclass.pykandlxm.widget.CircleImageView
                     android:id="@+id/head_image"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    android:src="@mipmap/abc"
+                    android:layout_gravity="center"
                     app:outCircleColor="@color/white"
-                    app:outCircleWigth="2dp"
-                    android:src="@mipmap/abc" />
-            </LinearLayout>
+                    app:outCircleWigth="2dp" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

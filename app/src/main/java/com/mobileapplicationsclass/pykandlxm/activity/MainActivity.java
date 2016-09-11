@@ -19,18 +19,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment01;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment02;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment03;
-import com.mobileapplicationsclass.pykandlxm.Fragemnt.Fragment04;
 import com.mobileapplicationsclass.pykandlxm.R;
 import com.mobileapplicationsclass.pykandlxm.adapter.DlistAdapter;
 import com.mobileapplicationsclass.pykandlxm.adapter.MyFragmentPagerAdapter;
 import com.mobileapplicationsclass.pykandlxm.base.BaseActivity;
+import com.mobileapplicationsclass.pykandlxm.fragment.Fragment01;
+import com.mobileapplicationsclass.pykandlxm.fragment.Fragment02;
+import com.mobileapplicationsclass.pykandlxm.fragment.Fragment03;
+import com.mobileapplicationsclass.pykandlxm.fragment.Fragment04;
 import com.mobileapplicationsclass.pykandlxm.model.DrawerList;
 import com.mobileapplicationsclass.pykandlxm.utils.ToastUtil;
 import com.mobileapplicationsclass.pykandlxm.widget.ActionSheetDialog;
@@ -42,13 +43,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
  * Created by Administrator on 2016/8/31 0031.
  */
 public class MainActivity extends BaseActivity {
-
 
 
     //定义假数据
@@ -83,7 +85,7 @@ public class MainActivity extends BaseActivity {
     private Bitmap currentBitmap;
 
     private DrawerList mDl_data;
-    private List<DrawerList> mDl_List;
+    private List<DrawerList> list;
     private DlistAdapter dlistAdapter;
 
     //页卡标题集合
@@ -108,6 +110,8 @@ public class MainActivity extends BaseActivity {
     DrawerLayout mDrawerLayout;
     @Bind(R.id.vpView)
     ViewPager mViewPager;
+    @Bind(R.id.iv_background)
+    ImageView ivBackground;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -182,14 +186,14 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        mDl_List = new ArrayList<>();
+        list = new ArrayList<>();
         for (int i = 0; i < list_name.length; i++) {
             String name = list_name[i];
             int logo = list_logo[i];
             mDl_data = new DrawerList(name, logo);
-            mDl_List.add(mDl_data);
+            list.add(mDl_data);
         }
-        dlistAdapter = new DlistAdapter(this, mDl_List);
+        dlistAdapter = new DlistAdapter(this, list);
         mListView.setAdapter(dlistAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -197,6 +201,7 @@ public class MainActivity extends BaseActivity {
                 switch (position) {
                     case 1:
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
                         break;
                 }
             }
@@ -205,19 +210,16 @@ public class MainActivity extends BaseActivity {
 
     private void initContent() {
 
-
         Fragment01 fre01 = new Fragment01();
         Fragment02 fre02 = new Fragment02();
         Fragment03 fre03 = new Fragment03();
         Fragment04 fre04 = new Fragment04();
-
 
         mViewList = new ArrayList<>();
         mViewList.add(fre01);
         mViewList.add(fre02);
         mViewList.add(fre03);
         mViewList.add(fre04);
-
 
         mTitleList = new ArrayList<>();
         for (int i = 0; i < constellation_name.length; i++) {
@@ -233,7 +235,6 @@ public class MainActivity extends BaseActivity {
         tab.setSelectedIndicatorColors(Color.WHITE);//滑动条颜色
         tab.setDistributeEvenly(true); //均匀平铺选项卡
         tab.setViewPager(mViewPager);//最后调用此方法
-
     }
 
     //在配置中改变打开抽屉的图标
@@ -285,6 +286,12 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //头像背景点击效果
+    @OnClick(R.id.iv_background)
+    public void onClick() {
+
     }
 
     /**
