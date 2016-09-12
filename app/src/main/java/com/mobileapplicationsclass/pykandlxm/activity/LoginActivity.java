@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity{
     public void onClick() {
         boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
         if (!isNetConnected) {
-            ToastUtil.showToast(this, "当前网络不可用,请检查网络设置");
+            ToastUtil.showToast(this, "您的手机网络不太顺畅哦");
             return;
         }
         login();

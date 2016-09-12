@@ -7,6 +7,6 @@
     android:background="@color/colorAccent"
     app:theme="@style/OverFlowMenuTheme"
     app:popupTheme="@style/AppTheme"
-    android:paddingTop="20dp">
+    android:paddingTop="@dimen/toolbar_padding_top">
 
 </android.support.v7.widget.Toolbar>

@@ -33,4 +33,6 @@ dependencies {
     compile 'com.jude:rollviewpager:1.2.9'
     // Glide 框架
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    // Retrofit2 网络框架
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
 }

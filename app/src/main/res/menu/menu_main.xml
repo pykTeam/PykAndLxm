@@ -8,7 +8,7 @@
 		android:id="@+id/id_action_share"
 		android:icon="@mipmap/sidebar_icon_share_dark"
 		android:orderInCategory="100"
-		android:title="离线缓存"
+		android:title="分享"
 		app:showAsAction="always"/>
 
 	<item

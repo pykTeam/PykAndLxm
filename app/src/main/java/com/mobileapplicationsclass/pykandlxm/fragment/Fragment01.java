@@ -66,7 +66,7 @@ public class Fragment01 extends BaseFragment {
         //设置播放时间间隔
         topNewsViewpager.setPlayDelay(4000);
         //设置适配器
-        topNewsViewpager.setAdapter(new TestLoopAdapter(topNewsViewpager,getActivity()));
+        topNewsViewpager.setAdapter(new TestLoopAdapter(topNewsViewpager, getActivity()));
 
         //设置指示器（顺序依次）
         //自定义指示器图片
@@ -93,9 +93,23 @@ public class Fragment01 extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), StarActivity.class);
+                Bundle bundle = new Bundle();
                 switch (position) {
+                    case 0:
+                        bundle.putString("starname", "水瓶座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
                     case 1:
-                        startActivity(new Intent(getActivity(), StarActivity.class));
+                        bundle.putString("starname", "双鱼座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        bundle.putString("starname", "白羊座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                         break;
                 }
             }
