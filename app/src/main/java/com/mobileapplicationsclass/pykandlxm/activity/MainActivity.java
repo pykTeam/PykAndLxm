@@ -45,6 +45,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
 
 
 /**
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity {
     private String[] list_name = {"主页", "登录", "退出", "关于"};
     private int[] list_logo = {R.mipmap.bili_anim_tv_chan_1, R.mipmap.bili_anim_tv_chan_3
             , R.mipmap.bili_anim_tv_chan_5, R.mipmap.bili_anim_tv_chan_7};
-    private String[] constellation_name = {"运势 ", "物语", "宝典", "收藏夹"};
+    private String[] constellation_name = {"运势 ", "物语", "精选", "收藏"};
 
     /**
      * 指定拍摄图片文件位置避免获取到缩略图
@@ -128,14 +129,14 @@ public class MainActivity extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         initDrawer();
         contentDrawe();
+        initTab();
         initContent();
-
     }
 
     @Override
     public void initToolBar() {
-        mToolbar.setLogo(R.mipmap.ic_bili_logo);
         mToolbar.setTitle("星座运势");
+        mToolbar.setLogo(R.mipmap.ic_bili_logo);
         setSupportActionBar(mToolbar);
         //开启ActionBar上App icon功能
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -201,11 +202,19 @@ public class MainActivity extends BaseActivity {
                 switch (position) {
                     case 1:
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        finish();
                         break;
                 }
             }
         });
+    }
+
+    private void initTab() {
+        tab.setTabTitleTextSize(15);//标题字体大小
+        tab.setTitleTextColor(Color.WHITE, 0xFFFFCCD0);//标题字体颜色
+        tab.setTabStripWidth(120);//滑动条宽度
+        tab.setSelectedIndicatorColors(Color.WHITE);//滑动条颜色
+        tab.setDistributeEvenly(true); //均匀平铺选项卡
+
     }
 
     private void initContent() {
@@ -229,11 +238,7 @@ public class MainActivity extends BaseActivity {
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(
                 getSupportFragmentManager(), mViewList, mTitleList);
         mViewPager.setAdapter(myFragmentPagerAdapter);
-        tab.setTabTitleTextSize(14);//标题字体大小
-        tab.setTitleTextColor(Color.WHITE, 0xFFF8BBD0);//标题字体颜色
-        tab.setTabStripWidth(110);//滑动条宽度
-        tab.setSelectedIndicatorColors(Color.WHITE);//滑动条颜色
-        tab.setDistributeEvenly(true); //均匀平铺选项卡
+        mViewPager.setOffscreenPageLimit(4);//缓存其他所有fragment的内容
         tab.setViewPager(mViewPager);//最后调用此方法
     }
 
@@ -276,13 +281,13 @@ public class MainActivity extends BaseActivity {
         }
         switch (item.getItemId()) {
             case R.id.id_action_share:
-                //离线缓存
+                //分享
                 ToastUtil.showToast(this, "分享");
                 break;
 
             case R.id.id_action_search:
                 //搜索
-                ToastUtil.showToast(this, "搜索");
+//                startActivity(new Intent(MainActivity.this, WebActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -384,5 +389,6 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, REQUESTCODE_CUTTING);
 
     }
+
 
 }

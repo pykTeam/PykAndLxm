@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bacground"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include
@@ -60,8 +61,8 @@
             android:drawableLeft="@mipmap/ic_login_username_default"
             android:padding="5dp"
             android:drawablePadding="10dp"
-            android:textSize="16sp"
-            android:hint="请输入账号"/>
+            android:textSize="@dimen/login_typeface"
+            android:hint="@string/login_username"/>
 
         <View
             android:layout_width="match_parent"
@@ -76,9 +77,9 @@
             android:drawableLeft="@mipmap/ic_login_password_default"
             android:padding="5dp"
             android:drawablePadding="10dp"
-            android:textSize="16sp"
+            android:textSize="@dimen/login_typeface"
             android:inputType="textPassword"
-            android:hint="请输入密码"/>
+            android:hint="@string/login_password"/>
     </LinearLayout>
 
     <Button
@@ -89,8 +90,8 @@
         android:layout_margin="20dp"
         android:background="@drawable/corner_btn"
         android:gravity="center"
-        android:text="登录"
+        android:text="@string/login_btn"
         android:textColor="@color/white"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/login_typeface"/>
 
 </LinearLayout>

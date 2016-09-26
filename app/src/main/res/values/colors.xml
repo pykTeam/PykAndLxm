@@ -11,12 +11,14 @@
     <color name="transparent">#000</color>
     <color name="black">#000</color>
     <color name="white">#FFF</color>
-    <color name="gray">#FFCCFF</color>
+    <color name="gray">#CCCCCC</color>
     <color name="blue">#3F51B5</color>
-    <color name="bacground">#F1F1F1</color>
+    <color name="title_bacground">#FF6600</color>
+    <color name="bacground">#FFFACD</color>
 
     //Dialog配色
     <color name="actionsheet_blue">#037BFF</color>
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
+
 </resources>

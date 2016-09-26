@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity{
 
     @Override
     public void initToolBar() {
-//        mToolbar.setTitle("星座运势");
+        mToolbar.setTitle("星座运势");
         setSupportActionBar(mToolbar);
         //开启ActionBar上App icon功能
         getSupportActionBar().setHomeButtonEnabled(true);

@@ -4,7 +4,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        //窗口的半透明状态
+        <!--<fine_item name="android:windowTranslucentStatus">true</fine_item>-->
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
     </style>
 
@@ -18,8 +19,8 @@
     </style>
 
     <!--Toolbar 样式-->
-    <style name="OverFlowMenuTheme" parent="Theme.AppCompat.NoActionBar">
-        <!--<item name="android:actionMenuTextColor">@color/white</item>-->
+    <style name="OverFlowMenuTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!--<fine_item name="android:actionMenuTextColor">@color/white</fine_item>-->
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="overlapAnchor">false</item>

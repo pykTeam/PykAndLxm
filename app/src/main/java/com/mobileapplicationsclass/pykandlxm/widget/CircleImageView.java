@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import com.mobileapplicationsclass.pykandlxm.R;
 
 /**
- * Created by lxm on 2016/2/21 0021.
  * 自定义圆形ImageView
+ * Created by lxm on 2016/2/21 0021.
  */
 public class CircleImageView extends ImageView {
 

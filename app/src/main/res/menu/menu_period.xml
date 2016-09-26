@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/today"
+        android:title="今日运势"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/tomorrow"
+        android:title="明日运势"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/week"
+        android:title="这周运势"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/nextweek"
+        android:title="下周运势"
+        app:showAsAction="never"/>
+
+</menu>

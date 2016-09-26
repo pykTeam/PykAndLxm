@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="140dp">
 
     <com.jude.rollviewpager.RollPagerView
         android:id="@+id/top_news_viewpager"
@@ -23,7 +23,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_star"/>
+            android:src="@mipmap/point_focus"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sv2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+            <TextView
+                android:id="@+id/tv_date2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+
+            <TextView
+                android:id="@+id/tv_starname2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+
+            <TextView
+                android:id="@+id/tv_health2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+            <TextView
+                android:id="@+id/tv_job2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+            <TextView
+                android:id="@+id/tv_love2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+            <TextView
+                android:id="@+id/tv_money2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/star_contextmargintop"
+            android:orientation="horizontal"
+            android:padding="@dimen/star_contextpadding">
+
+
+            <TextView
+                android:id="@+id/tv_work2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XXX"
+                android:textSize="@dimen/star_typeface" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

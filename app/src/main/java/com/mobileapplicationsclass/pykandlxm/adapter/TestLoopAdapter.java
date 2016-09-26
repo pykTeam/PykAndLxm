@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.LoopPagerAdapter;
 import com.mobileapplicationsclass.pykandlxm.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Administrator on 2016/9/11 0011.
@@ -17,10 +18,10 @@ import com.mobileapplicationsclass.pykandlxm.R;
 public class TestLoopAdapter extends LoopPagerAdapter {
     private Context context;
     private int[] imgs = {
-            R.mipmap.img1,
-            R.mipmap.img2,
-            R.mipmap.img3,
-            R.mipmap.img4,
+            R.mipmap.starry,
+            R.mipmap.starry,
+            R.mipmap.starry,
+            R.mipmap.starry,
     };
 
     public void setImgs(int[] imgs) {

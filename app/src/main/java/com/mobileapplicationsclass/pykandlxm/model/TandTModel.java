@@ -3,7 +3,7 @@ package com.mobileapplicationsclass.pykandlxm.model;
 /**
  * Created by Administrator on 2016/9/11 0011.
  */
-public class StarModel {
+public class TandTModel {
     /**
      * date : 20160911
      * name : 射手座

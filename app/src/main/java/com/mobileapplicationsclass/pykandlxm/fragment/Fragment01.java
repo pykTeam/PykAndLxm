@@ -34,11 +34,12 @@ public class Fragment01 extends BaseFragment {
 
     private String[] star_name = {"水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座"
             , "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"};
-    private int[] star_logo = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+    private int[] star_logo = {R.mipmap.star0, R.mipmap.star1, R.mipmap.star2,
+            R.mipmap.star3, R.mipmap.star4, R.mipmap.star5,
+            R.mipmap.star6, R.mipmap.star7, R.mipmap.star8,
+            R.mipmap.star9, R.mipmap.star10, R.mipmap.star11};
 
+    private boolean isPrepared;
 
     private List<StarGrid> list;
     private StarGrid mSd_data;
@@ -59,6 +60,11 @@ public class Fragment01 extends BaseFragment {
     protected void initView(View view, Bundle savedInstanceState) {
         initViewPager();
         initContent();
+    }
+
+    @Override
+    protected void lazyLoad() {
+
     }
 
     private void initViewPager() {
@@ -111,6 +117,52 @@ public class Fragment01 extends BaseFragment {
                         intent.putExtras(bundle);
                         startActivity(intent);
                         break;
+                    case 3:
+                        bundle.putString("starname", "金牛座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 4:
+                        bundle.putString("starname", "双子座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        bundle.putString("starname", "巨蟹座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 6:
+                        bundle.putString("starname", "狮子座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 7:
+                        bundle.putString("starname", "处女座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 8:
+                        bundle.putString("starname", "天秤座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 9:
+                        bundle.putString("starname", "天蝎座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 10:
+                        bundle.putString("starname", "射手座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                    case 11:
+                        bundle.putString("starname", "摩羯座");
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+
                 }
             }
         });
