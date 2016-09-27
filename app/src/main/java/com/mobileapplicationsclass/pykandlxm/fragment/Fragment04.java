@@ -1,6 +1,6 @@
 package com.mobileapplicationsclass.pykandlxm.fragment;
 
-import android.nfc.Tag;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,15 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.mobileapplicationsclass.pykandlxm.R;
-import com.mobileapplicationsclass.pykandlxm.adapter.SideslipAdapter;
+import com.mobileapplicationsclass.pykandlxm.activity.WebActivity;
+import com.mobileapplicationsclass.pykandlxm.activity.Web_collectActivity;
 import com.mobileapplicationsclass.pykandlxm.adapter.Sideslip_collectAdapter;
 import com.mobileapplicationsclass.pykandlxm.base.BaseFragment;
-import com.mobileapplicationsclass.pykandlxm.model.FineModel;
+import com.mobileapplicationsclass.pykandlxm.listener.OnItemClickListener;
 import com.mobileapplicationsclass.pykandlxm.sqlite.FineEntity;
 import com.mobileapplicationsclass.pykandlxm.sqlite.SQLiteDao;
+import com.mobileapplicationsclass.pykandlxm.utils.ToastUtil;
 import com.yanzhenjie.recyclerview.swipe.Closeable;
 import com.yanzhenjie.recyclerview.swipe.OnSwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -25,7 +26,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,7 +36,11 @@ import butterknife.ButterKnife;
  */
 public class Fragment04 extends BaseFragment {
 
+    protected static final String TAG = "Fragment04";
+
+
     List<FineEntity> list;
+
     //    private List<FineModel.ResultBean.ListBean> list;
     private Sideslip_collectAdapter sideslip_collectAdapter;
     private SQLiteDao sqLiteDao;
@@ -60,6 +64,14 @@ public class Fragment04 extends BaseFragment {
     protected void initView(View view, Bundle savedInstanceState) {
         isPrepared = true;
         initContent();
+
+        //点击置顶
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.scrollToPosition(0);
+            }
+        });
     }
 
     @Override
@@ -68,6 +80,7 @@ public class Fragment04 extends BaseFragment {
             return;
         }
         query();
+        Log.d(TAG, "lazyLoad: 查询收藏的数据");
     }
 
 
@@ -81,16 +94,39 @@ public class Fragment04 extends BaseFragment {
         // 设置侧滑菜单Item点击监听。
         recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-
     }
 
     private void query() {
         sqLiteDao = new SQLiteDao(getActivity());
-        list = sqLiteDao.queryAll();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = sqLiteDao.queryAll();
+
+            }
+        }).start();
         sideslip_collectAdapter = new Sideslip_collectAdapter(getActivity(), list);
         recyclerView.setAdapter(sideslip_collectAdapter);
         sideslip_collectAdapter.notifyDataSetChanged();
+        sideslip_collectAdapter.setOnItemClickListener(onItemClickListener);
     }
+
+
+    /**
+     * 条目点击监听。
+     */
+    private OnItemClickListener onItemClickListener = new OnItemClickListener() {
+
+        @Override
+        public void onItemClick(int position) {
+            Intent intent = new Intent(getActivity(), Web_collectActivity.class);
+            Bundle bundle = new Bundle();
+            Log.d("TAG", "onItemClick: " + position);
+            bundle.putString("weburl2", list.get(position).getUrl());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    };
 
     /**
      * 侧滑菜单创建器。在Item要创建菜单的时候调用。
@@ -111,7 +147,7 @@ public class Fragment04 extends BaseFragment {
             SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity())
                     .setBackgroundDrawable(R.color.bacground)
                     .setImage(R.mipmap.ic_action_add) // 图标。
-                    .setText("收藏") // 文字。
+                    .setText("删除") // 文字。
                     .setTextColor(R.color.title_bacground) // 文字颜色。
                     .setWidth(150)
                     .setHeight(height);
@@ -139,7 +175,7 @@ public class Fragment04 extends BaseFragment {
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
             //右侧菜单
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
-                Toast.makeText(getActivity(), "条目第" + (adapterPosition + 1) + "; 右侧菜单第" + (menuPosition + 1), Toast.LENGTH_SHORT).show();
+                ToastUtil.showToast(getActivity(), "删除成功！");
                 sqLiteDao.delete(list.get(adapterPosition).getId());
             }
             // TODO 推荐调用Adapter.notifyItemRemoved(position)，也可以Adapter.notifyDataSetChanged();
@@ -150,4 +186,6 @@ public class Fragment04 extends BaseFragment {
 
         }
     };
+
+
 }

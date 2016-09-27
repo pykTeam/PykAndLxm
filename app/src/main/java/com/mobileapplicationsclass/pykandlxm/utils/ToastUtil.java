@@ -19,13 +19,4 @@ public class ToastUtil {
         toast.show();
     }
 
-    public static void showToast2(Context context, String message) {
-        if (toast == null) {
-            toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        } else {
-            toast.setText(message);
-        }
-        toast.show();
-    }
-
 }

@@ -40,8 +40,16 @@ public class SQLiteDao {
         return count;
     }
 
+    public boolean find(String wechat_id) { //查询一条记录
+        SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.query("fine", null, "wechat_id=?", new String[]{wechat_id}, null, null, null);
+        boolean result = cursor.moveToNext();
+        cursor.close();
+        db.close();
+        return result;
+    }
 
-    public List<FineEntity> queryAll() {
+    public List<FineEntity> queryAll() {// 查询所有记录
         SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
         Cursor c = db.query("fine", null, null, null, null, null, "_id DESC");
         List<FineEntity> list = new ArrayList<FineEntity>();
@@ -53,7 +61,7 @@ public class SQLiteDao {
             String source = c.getString(1);
             String title = c.getString(2);
             String icon = c.getString(3);
-            String url = c.getString(0);
+            String url = c.getString(4);
 
             list.add(new FineEntity(id, wechat_id, source, title, icon, url));
         }

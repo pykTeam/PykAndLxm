@@ -202,6 +202,7 @@ public class MainActivity extends BaseActivity {
                 switch (position) {
                     case 1:
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
                         break;
                 }
             }
@@ -389,6 +390,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, REQUESTCODE_CUTTING);
 
     }
+
 
 
 }

@@ -17,12 +17,15 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/9/14 0014.
  */
 public class WebActivity extends BaseActivity {
+
+    private String webUrl;
+
     @Bind(R.id.wb)
     WebView wb;
     @Bind(R.id.tb_toolbar)
     Toolbar tbToolbar;
 
-    private String webUrl;
+
 
     @Override
     public int getLayoutId() {
@@ -33,7 +36,6 @@ public class WebActivity extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
         webUrl = bundle.getString("weburl");
-
         initWeb();
     }
 

@@ -95,11 +95,10 @@ public class SideslipAdapter extends SwipeMenuAdapter<SideslipAdapter.DefaultVie
         }
 
 
-
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(v, getAdapterPosition());
+                mOnItemClickListener.onItemClick(getLayoutPosition());
             }
         }
     }

@@ -60,7 +60,9 @@ public class Fragment03 extends BaseFragment {
     private SideslipAdapter sideslipAdapter;
     private int png = 1;
     private Retrofit retrofit;
+    private SQLiteDao sqLiteDao;
     private Call<FineModel> call_fine = null;
+
 
     /**
      * 标志位，标志已经初始化完成
@@ -86,19 +88,16 @@ public class Fragment03 extends BaseFragment {
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         isPrepared = true;
-        lazyLoad();
+
         //下拉刷新监听
         swipeLayout.setOnRefreshListener(mOnRefreshListener);
         // 添加滚动监听。
         recyclerView.addOnScrollListener(mOnScrollListener);
 
-        sideslipAdapter = new SideslipAdapter(list, getActivity());
-        recyclerView.setAdapter(sideslipAdapter);
 
 //        retrofit(png);
+        Log.d(TAG, "lazyLoad: 2");
         initContent();
-
-
 
 
         //点击置顶
@@ -113,11 +112,12 @@ public class Fragment03 extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
+
         if (!isPrepared || !isVisible || mHasLoadedOnce) {
             return;
         }
         retrofit(png);
-        Log.d(TAG, "lazyLoad: asdasdadas");
+        Log.d(TAG, "lazyLoad: 加载精选数据");
     }
 
 
@@ -129,12 +129,19 @@ public class Fragment03 extends BaseFragment {
 
         // 设置侧滑菜单创建器。
         recyclerView.setSwipeMenuCreator(swipeMenuCreator);
-        // 设置侧滑菜单Item点击监听。
-        recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
+
+        //异步操作 收藏监听
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 设置侧滑菜单Item点击监听。
+                recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
+            }
+        }).start();
+
     }
 
     private void retrofit(int pno) {
-        Log.d(TAG, "lazyLoad: 加载数据");
         OkHttpClient client = OkHttp3Utils.getOkHttpSingletonInstance();
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.URL_BASE_FINE)
@@ -155,15 +162,16 @@ public class Fragment03 extends BaseFragment {
                     FineModel fineModel = response.body();
                     try {
                         if (png > 1) {
-//                        ToastUtil.showToast(getActivity(),"page>1");
                             list.addAll(fineModel.getResult().getList());
                             sideslipAdapter.notifyDataSetChanged();
-//                            sideslipAdapter.setOnItemClickListener(onItemClickListener);
                         } else {
                             list = fineModel.getResult().getList();
                             sideslipAdapter = new SideslipAdapter(list, getActivity());
-                            recyclerView.setAdapter(sideslipAdapter);
                             sideslipAdapter.setOnItemClickListener(onItemClickListener);
+                            recyclerView.setAdapter(sideslipAdapter);
+
+//                            sideslipAdapter.notifyDataSetChanged();
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -178,6 +186,7 @@ public class Fragment03 extends BaseFragment {
                 ToastUtil.showToast(getActivity(), "您的手机网络不太顺畅哦");
             }
         });
+
     }
 
     /**
@@ -187,13 +196,18 @@ public class Fragment03 extends BaseFragment {
 
 
         @Override
-        public void onItemClick(View view, int position) {
-            Intent intent = new Intent(getActivity(), WebActivity.class);
-            Bundle bundle = new Bundle();
-            Log.d("TAG", "onItemClick: " + position);
-            bundle.putString("weburl", list.get(position).getUrl());
-            intent.putExtras(bundle);
-            startActivity(intent);
+        public void onItemClick(int position) {
+            try {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                Bundle bundle = new Bundle();
+                Log.d("TAG", "onItemClick: " + position);
+                bundle.putString("weburl", list.get(position).getUrl());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
@@ -211,24 +225,31 @@ public class Fragment03 extends BaseFragment {
          */
         @Override
         public void onItemClick(Closeable closeable, int adapterPosition, int menuPosition, int direction) {
+            Log.d(TAG, "adapterPosition：" + adapterPosition);
             closeable.smoothCloseMenu();// 关闭被点击的菜单。
             //右侧菜单
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
 
-                SQLiteDao sqLiteDao = new SQLiteDao(getActivity());
+                sqLiteDao = new SQLiteDao(getActivity());
                 FineEntity fineEntity = new FineEntity();
-//                try {
-                ToastUtil.showToast(getActivity(), "收藏成功！");
-                fineEntity.setSource(list.get(adapterPosition).getSource());
-                fineEntity.setTitle(list.get(adapterPosition).getTitle());
-                fineEntity.setIcon(list.get(adapterPosition).getFirstImg());
-                fineEntity.setUrl(list.get(adapterPosition).getUrl());
-                fineEntity.setWechat_id(list.get(adapterPosition).getId());
-                sqLiteDao.insert(fineEntity);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
+                try {
+                    if (sqLiteDao.find(list.get(adapterPosition).getId())) {
+                        ToastUtil.showToast(getActivity(), "已收藏！");
+                    } else {
+                        fineEntity.setSource(list.get(adapterPosition).getSource());
+                        fineEntity.setTitle(list.get(adapterPosition).getTitle());
+                        fineEntity.setIcon(list.get(adapterPosition).getFirstImg());
+                        fineEntity.setUrl(list.get(adapterPosition).getUrl());
+                        fineEntity.setWechat_id(list.get(adapterPosition).getId());
+                        sqLiteDao.insert(fineEntity);
+                        ToastUtil.showToast(getActivity(), "收藏成功！");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sideslipAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "刷新后adapterPosition：" + adapterPosition);
+                    ToastUtil.showToast(getActivity(), "收藏失败！请重试一遍！");
+                }
 
             }
 
@@ -284,10 +305,10 @@ public class Fragment03 extends BaseFragment {
                     return;
                 } else {
                     if (png < 10) {
-                        ToastUtil.showToast2(getActivity(), "加载更多...");
+                        ToastUtil.showToast(getActivity(), "加载更多...");
                         retrofit(png += 1);
                     } else {
-                        ToastUtil.showToast2(getActivity(), "已无更多");
+                        ToastUtil.showToast(getActivity(), "已无更多");
                     }
                 }
             }
@@ -326,16 +347,12 @@ public class Fragment03 extends BaseFragment {
     };
 
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: asdasdasdasd");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onStop: qweqweqwe");
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if(sideslipAdapter!=null){
+//            sideslipAdapter.notifyDataSetChanged();
+//            Log.d(TAG, "onResume: 恢复并且刷新");
+//        }
 
 }

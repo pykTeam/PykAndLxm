@@ -97,7 +97,7 @@ public class Sideslip_collectAdapter extends SwipeMenuAdapter<Sideslip_collectAd
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(v.getRootView(), getLayoutPosition());
+                mOnItemClickListener.onItemClick(getLayoutPosition());
             }
         }
     }

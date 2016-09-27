@@ -44,6 +44,14 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
 
     protected static final String TAG = "Fragment02";
 
+    /**
+     * 标志位，标志已经初始化完成
+     */
+    private boolean isPrepared;
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    private boolean mHasLoadedOnce;
 
     @Bind(R.id.pullLoadMoreRecyclerView)
     PullLoadMoreRecyclerView pullLoadMoreRecyclerView;
@@ -57,6 +65,7 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
+        isPrepared = true;
         OkHttpClient client = OkHttp3Utils.getOkHttpSingletonInstance();
         retrofit = new Retrofit.Builder()
                 .baseUrl(Constant.URL_BASE_JOKE)
@@ -65,7 +74,7 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
                 .build();
 
         initContext();
-        retrofit(page);
+//        retrofit(page);
 
 
         //点击置顶
@@ -80,6 +89,12 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
 
     @Override
     protected void lazyLoad() {
+
+        if (!isPrepared || !isVisible || mHasLoadedOnce) {
+            return;
+        }
+        retrofit(page);
+        Log.d(TAG, "lazyLoad: 物语加载");
 
     }
 
@@ -116,6 +131,7 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
                         e.printStackTrace();
                     }
                 }
+                mHasLoadedOnce = true;
             }
 
             @Override
@@ -157,7 +173,7 @@ public class Fragment02 extends BaseFragment implements PullLoadMoreRecyclerView
                             if (page < 5) {
                                 retrofit(page += 1);
                             } else {
-                                ToastUtil.showToast2(getActivity(), "已无更多");
+                                ToastUtil.showToast(getActivity(), "已无更多");
                             }
                         }
                         pullLoadMoreRecyclerView.setPullLoadMoreCompleted();
