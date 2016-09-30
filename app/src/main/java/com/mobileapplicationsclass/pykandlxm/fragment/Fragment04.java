@@ -2,6 +2,8 @@ package com.mobileapplicationsclass.pykandlxm.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,6 +52,7 @@ public class Fragment04 extends BaseFragment {
      */
     private boolean isPrepared;
 
+
     @Bind(R.id.recycler_view)
     SwipeMenuRecyclerView recyclerView;
     @Bind(R.id.btn)
@@ -65,6 +68,7 @@ public class Fragment04 extends BaseFragment {
         isPrepared = true;
         initContent();
 
+
         //点击置顶
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +76,9 @@ public class Fragment04 extends BaseFragment {
                 recyclerView.scrollToPosition(0);
             }
         });
+
     }
+
 
     @Override
     protected void lazyLoad() {
@@ -94,21 +100,24 @@ public class Fragment04 extends BaseFragment {
         // 设置侧滑菜单Item点击监听。
         recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
+
     }
 
     private void query() {
         sqLiteDao = new SQLiteDao(getActivity());
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Message msg = new Message();
                 list = sqLiteDao.queryAll();
-
+                handler.sendMessage(msg);
+                Log.d(TAG, "sendMessage: "+Thread.currentThread().getId());
             }
         }).start();
-        sideslip_collectAdapter = new Sideslip_collectAdapter(getActivity(), list);
-        recyclerView.setAdapter(sideslip_collectAdapter);
-        sideslip_collectAdapter.notifyDataSetChanged();
-        sideslip_collectAdapter.setOnItemClickListener(onItemClickListener);
+
+
     }
 
 
@@ -146,7 +155,7 @@ public class Fragment04 extends BaseFragment {
 
             SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity())
                     .setBackgroundDrawable(R.color.bacground)
-                    .setImage(R.mipmap.ic_action_add) // 图标。
+                    .setImage(R.mipmap.ic_action_delete) // 图标。
                     .setText("删除") // 文字。
                     .setTextColor(R.color.title_bacground) // 文字颜色。
                     .setWidth(150)
@@ -187,5 +196,15 @@ public class Fragment04 extends BaseFragment {
         }
     };
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            sideslip_collectAdapter = new Sideslip_collectAdapter(getActivity(), list);
+            recyclerView.setAdapter(sideslip_collectAdapter);
+            sideslip_collectAdapter.setOnItemClickListener(onItemClickListener);
+            super.handleMessage(msg);
+            Log.d(TAG, "handleMessage: "+Thread.currentThread().getId());
+        }
+    };
 
 }

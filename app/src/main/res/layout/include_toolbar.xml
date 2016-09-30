@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@color/title_bacground"
     app:theme="@style/OverFlowMenuTheme"
-    app:popupTheme="@style/AppTheme">
+    app:popupTheme="@style/AppTheme"
+    app:layout_scrollFlags="scroll|enterAlways">
 
     <TextView
         android:layout_width="wrap_content"

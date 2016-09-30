@@ -130,14 +130,10 @@ public class Fragment03 extends BaseFragment {
         // 设置侧滑菜单创建器。
         recyclerView.setSwipeMenuCreator(swipeMenuCreator);
 
-        //异步操作 收藏监听
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // 设置侧滑菜单Item点击监听。
-                recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
-            }
-        }).start();
+
+        // 设置侧滑菜单Item点击监听。
+        recyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
+
 
     }
 
@@ -247,7 +243,6 @@ public class Fragment03 extends BaseFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                     sideslipAdapter.notifyDataSetChanged();
-                    Log.d(TAG, "刷新后adapterPosition：" + adapterPosition);
                     ToastUtil.showToast(getActivity(), "收藏失败！请重试一遍！");
                 }
 
